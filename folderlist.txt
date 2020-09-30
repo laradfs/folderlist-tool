@@ -1,0 +1,124 @@
+param (
+    [switch]$list = $false,    
+    [string]$ead = $false
+)
+
+function OutputMarkup ($spacer, $intitle, $insize, $incount) {
+Write-Output "$spacer`t<did>`n"
+Write-Output "$spacer`t`t<unittitle>$intitle</unittitle>`n"
+Write-Output "$spacer`t`t<physdesc>`n"
+Write-Output "$spacer`t`t`t<extent altrender=""materialtype spaceoccupied"">$insize</extent>`n"
+Write-Output "$spacer`t`t`t<extent altrender=""carrier"">$incount electronic files</extent>`n"
+Write-Output "$spacer`t`t</physdesc>`n"
+Write-Output "$spacer`t</did>"
+}
+
+function GetSize ($invalue) {
+if ($list -eq $true) {
+if ($invalue -lt 1KB) {$outvalue = "{0:f2} B" -f ($invalue)}
+if ($invalue -eq $null) {$outvalue = "0.00 B"}
+if ($invalue -ge 1KB -and $invalue -lt 1MB) {$outvalue = "{0:f2} KB" -f ($invalue / 1KB)}
+if ($invalue -ge 1MB -and $invalue -lt 1GB) {$outvalue = "{0:f2} MB" -f ($invalue / 1MB)}
+if ($invalue -ge 1GB -and $invalue -lt 1TB) {$outvalue = "{0:f2} GB" -f ($invalue / 1GB)}
+if ($invalue -ge 1TB) {$outvalue = "{0:f2} TB" -f ($invalue / 1TB)}
+} else {
+if ($invalue -lt 1KB) {$outvalue = "{0:f2} bytes" -f ($invalue)}
+if ($invalue -eq $null) {$outvalue = "0.00 bytes"}
+if ($invalue -ge 1KB -and $invalue -lt 1MB) {$outvalue = "{0:f2} kilobytes" -f ($invalue / 1KB)}
+if ($invalue -ge 1MB -and $invalue -lt 1GB) {$outvalue = "{0:f2} megabytes" -f ($invalue / 1MB)}
+if ($invalue -ge 1GB -and $invalue -lt 1TB) {$outvalue = "{0:f2} gigabytes" -f ($invalue / 1GB)}
+if ($invalue -ge 1TB) {$outvalue = "{0:f2} terabytes" -f ($invalue / 1TB)}
+}
+return $outvalue
+}
+
+$file = $null
+$output = $null
+$outpart = $null
+$basePath = '.'
+$baseFolder = Get-Item $basePath
+$subFolders = Get-ChildItem $basePath -Depth 0 -Directory
+
+ForEach ($folder in $subFolders) {
+$folderSize = (Get-Childitem -Path $folder.Name -File -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum   
+$folderCount = (Get-Childitem -Path $folder.Name -File -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Count
+$outpart = GetSize($folderSize)
+if ($list -eq $true) {
+$output = "$folder, $outpart ($folderCount files)"
+#Write-Output $output
+$file = "$file$output`n" 
+} else {
+$output = OutputMarkup "" $folder $outpart $foldercount
+$file = "$file<c01 level=""file"">`n"
+$file = "$file$output`n" 
+}
+
+$subSubFolders = Get-ChildItem -Path $folder.Name -Depth 0 -Directory
+ForEach ($folder2 in $subSubFolders) {
+$folderSize = (Get-Childitem -Path $folder2.FullName -File -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum   
+$folderCount = (Get-Childitem -Path $folder2.FullName -File -Recurse -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Count 
+$outpart = GetSize($folderSize)
+if ($list -eq $true) {
+$output = "- $folder2.Name, $outpart ($folderCount files)"
+$file = "$file$output`n"
+} else {
+$output = OutputMarkup "`t" $folder2 $outpart $foldercount
+$file = "$file`t<c02 level=""file"">`n"
+$file = "$file$output`n"
+$file = "$file`t</c02>`n"
+}
+}
+
+
+$folderSize = (Get-Childitem -Path $folder.Name -File -Depth 0 -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum   
+$folderCount = (Get-Childitem -Path $folder.Name -File -Depth 0 -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Count
+if ($subSubFolders -ne $null) {
+$outpart = GetSize($folderSize)
+$output = "- Additional files, $outpart ($folderCount files)"
+if ($folderCount -gt 0) {
+if ($list -eq $true) {
+$file = "$file$output`n"
+} else {
+$output = OutputMarkup "`t" "Additional files" $outpart $foldercount
+$file = "$file`t<c02 level=""file"">`n"
+$file = "$file$output`n"
+$file = "$file`t</c02>`n"
+} 
+}
+}
+if ($list -ne $true) {
+$file = "$file</c01>`n"
+}
+}
+
+
+$folderSize = (Get-Childitem -Path $basePath -File -Depth 0 -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Sum   
+$folderCount = (Get-Childitem -Path $basePath -File -Depth 0 -Force -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue).Count
+$outpart = GetSize($folderSize)
+$output = "Additional files, $outpart ($folderCount files)" 
+if ($folderCount -gt 0) {
+if ($list -eq $true) {
+$file = "$file$output`n"
+} else {
+$output = OutputMarkup "" "Additional files" $outpart $foldercount
+$file = "$file<c01 level=""file"">`n"
+$file = "$file$output`n"
+if ($list -ne $true) {
+$file = "$file</c01>`n"
+}
+}
+}
+
+if ($list -eq $true) {
+Write-Output $file
+} else {
+if ($ead -ne $false -and $ead -ne $true) {
+Write-Output "Done."
+$fullPath = "C:\users\" + [System.Security.Principal.WindowsIdentity]::GetCurrent().Name.Split("\")[1] + ".AD\Desktop\$ead"
+Write-Output $file | Out-File -FilePath $fullPath
+}
+}
+
+if ($list -eq $false -and ($ead -eq $false -or $ead -eq $true)) {
+Write-Output "Program requires either -list parameter or -ead parameter with file name."
+}
