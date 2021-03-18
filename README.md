@@ -16,9 +16,10 @@ To run, open a command prompt and navigate to the folder whose contents you want
 At the command prompt, enter the path to folderlist.exe. 
 After the path, type the desired output format:
 -list (or -l) for a simple list* 
--ead  (or -e) followed by a filename for the file you want to create (e.g. -ead collectionname.txt) to generate EAD components in a text file. NOTE: text files will be saved on the desktop by default.
+-ead  (or -e) followed by a  path and filename for the file you want to create (e.g. -ead c:\Users\username\Documents\collectionname.txt) to generate EAD components in a text file. NOTE: if you do not provide a path and filename, a file called FolderListOutput.txt will be written to the parent directory.  If you provide a filename and no path, the file will be written into the same directory that you just analyzed.
 Copy the output from the screen (if you chose -list) or the text file (if you chose -ead) and paste it into the appropriate spot in the finding aid file.
- 
-*If you wish to save the output of the -list option to a text file, you can append “>filename.txt” where “filename.txt” is the name of the text file you want to create: -list>saveithere.txt
 
+NOTE: If you execute the program without any parameter (without -ead or -list) it will default to the -ead option and the output will be saved in the directory that is the parent of the directory the program is being run on.  
+ 
+*If you wish to save the output of the -list option to a text file, you can append “>" followed by a path and filename
 
