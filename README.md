@@ -23,3 +23,5 @@ NOTE: If you execute the program without any parameter (without -ead or -list) i
  
 *If you wish to save the output of the -list option to a text file, you can append “>" followed by a path and filename
 
+A short video demonstration is available at https://mediaspace.umn.edu/media/t/1_qfcpa2w3#
+
