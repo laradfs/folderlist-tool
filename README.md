@@ -1,5 +1,5 @@
 # folderlist-tool
-A Windows executable program (created from a Windows Powershell script) for generating basic metadata on a file directory for use in archival description.
+A Windows command line tool (created from a Windows Powershell script) for generating basic metadata on a file directory for use in archival description.
 
 Folderlist.exe is a Windows executable program that can be run on a directory in a Windows environment and produce either of the following: 
 1) A simple folder list of the top two levels of folders, including their size and number of files.  The list can then be copied and pasted from the screen into a scope/content or arrangement note in an archival finding aid.    
