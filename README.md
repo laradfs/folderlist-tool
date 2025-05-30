@@ -18,7 +18,9 @@ Maximum depth to list subdirectories (1 for top level only) - The number of dire
 File name and path for output - Enter the full path and name for the output
 
 =====
+
 OLD version - folderlist.exe
+
 A Windows command line tool (created from a Windows Powershell script) for generating basic metadata on a file directory for use in archival description.
 
 Folderlist.exe is a Windows executable program that can be run on a directory in a Windows environment and produce either of the following: 
