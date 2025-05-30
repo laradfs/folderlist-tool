@@ -108,7 +108,7 @@ def list_directory_contents(path, max_depth, current_depth=1):
 
 if __name__ == "__main__":
     # Prompt user for a directory path
-    user_input = input("Enter the full path of a Windows directory: ").strip('"')
+    user_input = input("Enter the full path of a directory: ").strip('"')
     output_mode = input("EAD or list?")
     # Validate the path
     if not os.path.isdir(user_input):
