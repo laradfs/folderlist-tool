@@ -1,4 +1,24 @@
 # folderlist-tool
+A Python script for generating basic metadata from a file directory for use in archival description
+
+Folderlist.py is a script that can be run on a directory and output either of the following: 
+1) A simple folder list of the folders, going down as many levels as indicated by the user, including their size and number of files.  The list can then be copied and pasted from the screen into a scope/content or arrangement note in an archival finding aid.  
+[use the list option]
+2) A folder list marked up as EAD components. The list can then be copied and pasted into an EAD finding aid, so the folders will be components of the collection. If EAD output is requested, the top level folders are &lt;c01&gt; elements, and subfolders are &lt;c02&gt; elements, etc.
+[use the EAD option]
+The output lists directories/folders only.  Any individual files that are not contained in subfolders are summarized as "Additional files".
+
+INSTRUCTIONS FOR USE:
+ 
+Download the .py file.  
+When you run it, you will be asked for the following input:
+Full path of a directory - Enter the path for the directory on which you want to generate output. 
+EAD or list? - Enter "list" if you want a simple list with no mark-up. Entering EAD (or anything else) will result in output marked up as Encoded Archival Description. 
+Maximum depth to list subdirectories (1 for top level only) - The number of directory levels you would like in the output
+File name and path for output - Enter the full path and name for the output
+
+=====
+OLD version - folderlist.exe
 A Windows command line tool (created from a Windows Powershell script) for generating basic metadata on a file directory for use in archival description.
 
 Folderlist.exe is a Windows executable program that can be run on a directory in a Windows environment and produce either of the following: 
