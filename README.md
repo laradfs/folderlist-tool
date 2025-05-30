@@ -11,10 +11,15 @@ The output lists directories/folders only.  Any individual files that are not co
 INSTRUCTIONS FOR USE:
  
 Download the .py file.  
+
 When you run it, you will be asked for the following input:
+
 Full path of a directory - Enter the path for the directory on which you want to generate output. 
+
 EAD or list? - Enter "list" if you want a simple list with no mark-up. Entering EAD (or anything else) will result in output marked up as Encoded Archival Description. 
+
 Maximum depth to list subdirectories (1 for top level only) - The number of directory levels you would like in the output
+
 File name and path for output - Enter the full path and name for the output
 
 =====
